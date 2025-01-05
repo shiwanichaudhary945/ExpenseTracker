@@ -17,6 +17,10 @@
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
+      "Id": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\wwwroot\\css\\dashboard.css",
+      "PackagePath": "staticwebassets\\css\\dashboard.css"
+    },
+    {
       "Id": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
     },

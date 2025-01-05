@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "3tqcObsroRX/rDdG+++/pqNvz3AIKeARkWMQugmlZcE=",
+  "Hash": "shjP7e0en9NDgDYAsvJhPooHHtRce78fwohVxW1NpG0=",
   "Source": "ExpenseTracker",
   "BasePath": "/",
   "Mode": "Root",
@@ -31,8 +31,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ApplicationBundle",
-      "Fingerprint": "au9wn8c9iq",
-      "Integrity": "0pBYGHP6cdEz/Au54UbdmuP83YPORRBNGKwYZsNNOpg=",
+      "Fingerprint": "g22z3imsl2",
+      "Integrity": "yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\obj\\Debug\\net8.0-android\\scopedcss\\bundle\\ExpenseTracker.styles.css"
@@ -52,8 +52,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ProjectBundle",
-      "Fingerprint": "au9wn8c9iq",
-      "Integrity": "0pBYGHP6cdEz/Au54UbdmuP83YPORRBNGKwYZsNNOpg=",
+      "Fingerprint": "g22z3imsl2",
+      "Integrity": "yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\obj\\Debug\\net8.0-android\\scopedcss\\projectbundle\\ExpenseTracker.bundle.scp.css"
@@ -122,6 +122,27 @@
       "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
+      "Identity": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\wwwroot\\css\\dashboard.css",
+      "SourceId": "ExpenseTracker",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\wwwroot\\",
+      "BasePath": "/",
+      "RelativePath": "css/dashboard#[.{fingerprint}]?.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "3h8espqi61",
+      "Integrity": "mR3cm3a9XJbyUm0bxdbcfyfQ87mWXER9RDn0rQQyxzY=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\dashboard.css"
+    },
+    {
       "Identity": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\wwwroot\\favicon.png",
       "SourceId": "ExpenseTracker",
       "SourceType": "Discovered",
@@ -188,7 +209,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 17 Dec 2024 04:56:04 GMT"
+          "Value": "Mon, 30 Dec 2024 16:57:13 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -225,7 +246,7 @@
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 17 Dec 2024 04:56:04 GMT"
+          "Value": "Mon, 30 Dec 2024 16:57:13 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -412,8 +433,8 @@
       ]
     },
     {
-      "Route": "ExpenseTracker.au9wn8c9iq.bundle.scp.css",
-      "AssetFile": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\obj\\Debug\\net8.0-android\\scopedcss\\projectbundle\\ExpenseTracker.bundle.scp.css",
+      "Route": "css/dashboard.3h8espqi61.css",
+      "AssetFile": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\wwwroot\\css\\dashboard.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -422,7 +443,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5481"
+          "Value": "2114"
         },
         {
           "Name": "Content-Type",
@@ -430,11 +451,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"0pBYGHP6cdEz/Au54UbdmuP83YPORRBNGKwYZsNNOpg=\""
+          "Value": "\"mR3cm3a9XJbyUm0bxdbcfyfQ87mWXER9RDn0rQQyxzY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 17 Dec 2024 04:56:23 GMT"
+          "Value": "Wed, 01 Jan 2025 15:23:21 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -444,21 +465,21 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "au9wn8c9iq"
+          "Value": "3h8espqi61"
         },
         {
           "Name": "label",
-          "Value": "ExpenseTracker.bundle.scp.css"
+          "Value": "css/dashboard.css"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-0pBYGHP6cdEz/Au54UbdmuP83YPORRBNGKwYZsNNOpg="
+          "Value": "sha256-mR3cm3a9XJbyUm0bxdbcfyfQ87mWXER9RDn0rQQyxzY="
         }
       ]
     },
     {
-      "Route": "ExpenseTracker.au9wn8c9iq.styles.css",
-      "AssetFile": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\obj\\Debug\\net8.0-android\\scopedcss\\bundle\\ExpenseTracker.styles.css",
+      "Route": "css/dashboard.css",
+      "AssetFile": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\wwwroot\\css\\dashboard.css",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -467,7 +488,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5481"
+          "Value": "2114"
         },
         {
           "Name": "Content-Type",
@@ -475,29 +496,21 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"0pBYGHP6cdEz/Au54UbdmuP83YPORRBNGKwYZsNNOpg=\""
+          "Value": "\"mR3cm3a9XJbyUm0bxdbcfyfQ87mWXER9RDn0rQQyxzY=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 17 Dec 2024 04:56:23 GMT"
+          "Value": "Wed, 01 Jan 2025 15:23:21 GMT"
         },
         {
           "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
+          "Value": "no-cache"
         }
       ],
       "EndpointProperties": [
         {
-          "Name": "fingerprint",
-          "Value": "au9wn8c9iq"
-        },
-        {
-          "Name": "label",
-          "Value": "ExpenseTracker.styles.css"
-        },
-        {
           "Name": "integrity",
-          "Value": "sha256-0pBYGHP6cdEz/Au54UbdmuP83YPORRBNGKwYZsNNOpg="
+          "Value": "sha256-mR3cm3a9XJbyUm0bxdbcfyfQ87mWXER9RDn0rQQyxzY="
         }
       ]
     },
@@ -512,7 +525,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5481"
+          "Value": "1796"
         },
         {
           "Name": "Content-Type",
@@ -520,11 +533,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"0pBYGHP6cdEz/Au54UbdmuP83YPORRBNGKwYZsNNOpg=\""
+          "Value": "\"yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 17 Dec 2024 04:56:23 GMT"
+          "Value": "Sat, 04 Jan 2025 10:27:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -534,7 +547,97 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-0pBYGHP6cdEz/Au54UbdmuP83YPORRBNGKwYZsNNOpg="
+          "Value": "sha256-yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU="
+        }
+      ]
+    },
+    {
+      "Route": "ExpenseTracker.g22z3imsl2.bundle.scp.css",
+      "AssetFile": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\obj\\Debug\\net8.0-android\\scopedcss\\projectbundle\\ExpenseTracker.bundle.scp.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1796"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 04 Jan 2025 10:27:28 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "g22z3imsl2"
+        },
+        {
+          "Name": "label",
+          "Value": "ExpenseTracker.bundle.scp.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU="
+        }
+      ]
+    },
+    {
+      "Route": "ExpenseTracker.g22z3imsl2.styles.css",
+      "AssetFile": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\obj\\Debug\\net8.0-android\\scopedcss\\bundle\\ExpenseTracker.styles.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "1796"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Sat, 04 Jan 2025 10:27:28 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "g22z3imsl2"
+        },
+        {
+          "Name": "label",
+          "Value": "ExpenseTracker.styles.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU="
         }
       ]
     },
@@ -549,7 +652,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "5481"
+          "Value": "1796"
         },
         {
           "Name": "Content-Type",
@@ -557,11 +660,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"0pBYGHP6cdEz/Au54UbdmuP83YPORRBNGKwYZsNNOpg=\""
+          "Value": "\"yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 17 Dec 2024 04:56:23 GMT"
+          "Value": "Sat, 04 Jan 2025 10:27:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -571,7 +674,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-0pBYGHP6cdEz/Au54UbdmuP83YPORRBNGKwYZsNNOpg="
+          "Value": "sha256-yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU="
         }
       ]
     },

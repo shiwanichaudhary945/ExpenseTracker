@@ -1,0 +1,69 @@
+﻿@page "/todo"
+
+@using System.Text.Json
+
+<h3>To-Do List</h3>
+
+<div>
+    <label for="new-task">New Task:</label>
+    <input id="new-task" @bind="newTask" placeholder="Enter task name..." />
+    <button @onclick="AddTask">Add</button>
+</div>
+
+@if (todoList.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var task in todoList)
+            {
+                <tr>
+                    <td>@task.Id</td>
+                    <td>
+                        @if (task.IsBeingEdited)
+                        {
+                            <input @bind="task.TaskName" placeholder="Edit task name..." />
+                        }
+                        else
+                        {
+                            @task.TaskName
+                        }
+                    </td>
+                    <td>@(task.IsCompleted ? "Completed" : "Pending")</td>
+                    <td>
+                        <button @onclick="() => ToggleTaskStatus(task)">Toggle Status</button>
+                        @if (task.IsBeingEdited)
+                        {
+                            <button @onclick="() => UpdateTask(task)">Update</button>
+                        }
+                        else
+                        {
+                            <button @onclick="() => EditTask(task)">Edit</button>
+                        }
+                        <button @onclick="() => RemoveTask(task.Id)">Remove</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No tasks available. Add a task to get started!</p>
+}
+
+<div>
+    <button @onclick="SaveTasks">Save Tasks</button>
+    <button @onclick="LoadTasks">Load Tasks</button>
+</div>
+
+<p>@message</p>
+
+

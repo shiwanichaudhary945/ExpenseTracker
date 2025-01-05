@@ -1,0 +1,89 @@
+﻿@page "/register"
+@using ExpenseTracker.Components.Layout
+@layout FirstLayout
+@using ExpenseTracker.Models
+@inject UserService UserService
+@inject NavigationManager NavigationManager
+<section class="min-vh-100 d-flex justify-content-center align-items-center" style="background-color: #ffffff;">
+    <div class="card shadow-lg border-0 p-4" style="width: 400px; border-radius: 16px; background-color: #ffffff;">
+        <!-- Header -->
+        <h2 class="text-center mb-4 text-success" style="font-weight: bold;">Signup</h2>
+
+        <!-- Registration Form -->
+        <form @onsubmit="OnRegister">
+            <div class="mb-3">
+                <label for="username" class="form-label text-success" style="font-weight: 500;">Username</label>
+                <input id="username" type="text" class="form-control" placeholder="Enter your username" @bind="RegisterUsername" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label text-success" style="font-weight: 500;">Email</label>
+                <input id="email" type="email" class="form-control" placeholder="Enter your email" @bind="RegisterEmail" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label text-success" style="font-weight: 500;">Password</label>
+                <input id="password" type="password" class="form-control" placeholder="Enter your password" @bind="RegisterPassword" required>
+            </div>
+
+            <button type="submit" class="btn" style="background-color: #0EB075; color: #ffffff; font-size: 1rem; font-weight: 600; width: 100%; padding: 12px 0; margin-bottom: 16px;">Signup</button>
+        </form>
+
+        <!-- Error or Success Message -->
+        @if (!string.IsNullOrEmpty(Message))
+        {
+            <p class="text-center mt-3" style="color: @((Message.Contains("successful")) ? "#28a745" : "#dc3545");">@Message</p>
+        }
+
+        <!-- Redirect to Login -->
+        <div class="text-center mt-3">
+            <p class="mb-0">Already have an account? <a href="/login" class="text-success text-decoration-none">Login here</a></p>
+        </div>
+    </div>
+</section>
+
+
+@code {
+    private string RegisterUsername = "";
+    private string RegisterEmail = "";
+    private string RegisterPassword = "";
+    private string Message = "";
+    private List<Usermodel> Users = new();
+
+    protected override void OnInitialized()
+    {
+        Users = UserService.LoadUsers();
+    }
+
+    private async Task OnRegister()
+    {
+        if (string.IsNullOrWhiteSpace(RegisterUsername) || string.IsNullOrWhiteSpace(RegisterEmail) || string.IsNullOrWhiteSpace(RegisterPassword))
+        {
+            Message = "All fields are required.";
+            return;
+        }
+
+        if (Users.Any(u => u.Email == RegisterEmail))
+        {
+            Message = "Email already exists.";
+            return;
+        }
+
+        // Generate a unique ID for the new user
+        var newUserId = Users.Any() ? Users.Max(u => u.Id) + 1 : 1;
+
+        var newUser = new Usermodel
+            {
+                Id = newUserId,
+                Username = RegisterUsername,
+                Email = RegisterEmail,
+                Password = UserService.HashPassword(RegisterPassword)
+            };
+
+        Users.Add(newUser);
+        UserService.SaveUsers(Users);
+        Message = "Registration Sucessful";
+        await Task.Delay(2000);
+        NavigationManager.NavigateTo("/login");
+    }
+}

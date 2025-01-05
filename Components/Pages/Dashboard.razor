@@ -1,0 +1,223 @@
+﻿@page "/dashboard"
+@using ExpenseTracker.Models
+@inject NavigationManager NavigationManager
+@inject TransactionService TransactionService
+@inject IJSRuntime JSRuntime
+
+<div class="main-content container py-4" style="background-color: white; color: black;">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center w-100">
+            <div class="input-group" style="width: 50%;">
+                <span class="input-group-text bg-white text-dark">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input @bind="SearchTerm"
+                       @oninput="OnSearchInput"
+                       type="text"
+                       class="form-control bg-white text-dark"
+                       placeholder="Search by type, tags, or date range..." />
+            </div>
+            <div id="currentDate" class="ms-3 text-dark"></div>
+        </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-3">
+        <div class="col-md-3">
+            <div class="card text-center bg-warning text-white shadow-sm">
+                <div class="card-body">
+                    <h6>Total CashInFlows</h6>
+                    <p class="display-6">@TotalWealth</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center bg-success text-white shadow-sm">
+                <div class="card-body">
+                    <h6>Total CashOutflows</h6>
+                    <p class="display-6">@TotalOutflows</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Cards for Income and Expense -->
+    <div class="row g-3 mt-4">
+        <div class="col-md-3">
+            <div class="card text-center bg-success text-white shadow-sm">
+                <div class="card-body">
+                    <h6>Lowest Income</h6>
+                    <p class="display-6">@LowestIncome</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-center bg-warning text-white shadow-sm">
+                <div class="card-body">
+                    <h6>Lowest Expense</h6>
+                    <p class="display-6">@LowestExpense</p>
+                </div>
+            </div>
+        </div>
+   </div>
+
+
+<!-- Add this CSS in your style section or an external CSS file -->
+<style>
+    .input-group-text {
+        border-radius: 0.25rem 0 0 0.25rem;
+    }
+
+    .form-control {
+        border-radius: 0 0.25rem 0.25rem 0;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #495057;
+    }
+
+    .card-body h6 {
+        font-size: 1rem;
+    }
+
+    .card-body .display-6 {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+
+    .bg-warning {
+        background-color: #ffc107 !important; /* Yellow for cash inflows and expense */
+    }
+
+    .bg-success {
+        background-color: #28a745 !important; /* Green for cash outflows and income */
+    }
+</style>
+
+<!-- Add Bootstrap Icons library in your HTML -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+
+    <!-- Filtered Transactions -->
+    <div class="mt-4">
+        <h3>Filtered Transactions</h3>
+        <ul>
+            @if (FilteredItems?.Any() ?? false)
+            {
+                @foreach (var transaction in FilteredItems)
+                {
+                    <li>
+                        <span>
+                            @transaction.Date - @transaction.Type -
+                            @string.Join(", ", transaction.Tags ?? new List<string>()) -
+                            @transaction.Amount
+                        </span>
+                    </li>
+                }
+            }
+            else
+            {
+                <p>No transactions found matching the criteria.</p>
+            }
+        </ul>
+    </div>
+</div>
+
+@code {
+    private decimal TotalEarnings = 0;
+    private decimal TotalOutflows = 0;
+    private decimal TotalWealth = 0;
+    private decimal HighestIncome = 0;
+    private decimal LowestIncome = 0;
+    private decimal HighestExpense = 0;
+    private decimal LowestExpense = 0;
+    private string SearchTerm = string.Empty;
+    private List<TransactionModel> FilteredItems = new();
+    private CancellationTokenSource _cancellationTokenSource = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var userId = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "userId");
+
+            if (string.IsNullOrEmpty(userId))
+            {
+                NavigationManager.NavigateTo("/login");
+                return;
+            }
+
+            var id = int.Parse(userId);
+
+            // Fetch total earnings and outflows
+            TotalEarnings = TransactionService.CalculateTotalIncome(id);
+            TotalOutflows = TransactionService.CalculateTotalExpenses(id);
+            TotalWealth = TotalEarnings - TotalOutflows;
+
+            // Fetch the highest and lowest income and expenses
+            var highestIncome = TransactionService.GetHighestIncome(id);
+            var lowestIncome = TransactionService.GetLowestIncome(id);
+            var highestExpense = TransactionService.GetHighestExpense(id);
+            var lowestExpense = TransactionService.GetLowestExpense(id);
+
+            // Set the values in the dashboard
+            HighestIncome = highestIncome?.Amount ?? 0;
+            LowestIncome = lowestIncome?.Amount ?? 0;
+            HighestExpense = highestExpense?.Amount ?? 0;
+            LowestExpense = lowestExpense?.Amount ?? 0;
+
+            // Load all transactions initially
+            FilteredItems = TransactionService.GetUserTransactions(id);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error initializing dashboard: {ex.Message}");
+        }
+    }
+
+    private async Task OnSearchInput()
+    {
+        // Cancel any ongoing search task
+        _cancellationTokenSource.Cancel();
+        _cancellationTokenSource = new CancellationTokenSource();
+
+        // Wait for 500ms before triggering the search to avoid rapid requests
+        await Task.Delay(500);
+
+        if (!_cancellationTokenSource.Token.IsCancellationRequested)
+        {
+            FilterItems();
+        }
+    }
+
+    private void FilterItems()
+    {
+        if (string.IsNullOrWhiteSpace(SearchTerm))
+        {
+            // Load all transactions if the search query is empty
+            var userId = int.Parse(JSRuntime.InvokeAsync<string>("localStorage.getItem", "userId").Result);
+            FilteredItems = TransactionService.GetUserTransactions(userId);
+        }
+        else
+        {
+            // Split the search query into individual words
+            var searchWords = SearchTerm.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Get user ID
+            var userId = int.Parse(JSRuntime.InvokeAsync<string>("localStorage.getItem", "userId").Result);
+
+            // Filter transactions based on search query
+            FilteredItems = TransactionService
+                .GetUserTransactions(userId)
+                .Where(t => searchWords.All(word =>
+                    t.Type.ToString().IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    (t.Tags != null && t.Tags.Any(tag => tag.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0)) ||
+                    t.Date.ToString("yyyy-MM-dd").IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0))
+                .ToList();
+        }
+
+        StateHasChanged(); // Trigger re-render after the state update
+    }
+}

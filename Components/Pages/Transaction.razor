@@ -1,0 +1,135 @@
+﻿@page "/transaction"
+@using ExpenseTracker.Models
+@inject TransactionService TransactionService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<section class="bg-green-50 min-h-screen flex items-center justify-center">
+    <div class="w-full max-w-sm bg-green-100 rounded-xl shadow-2xl p-4 transform transition-all hover:scale-105">
+        <div class="text-center mb-4">
+            <h2 class="text-xl font-semibold text-green-800">Add Transaction</h2>
+        </div>
+
+        <form @onsubmit="OnSaveTransaction">
+
+            <div class="mb-3">
+                <input type="number" class="form-select w-full p-2 rounded-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Amount" @bind="newTransactionAmount" required min="0" step="any" />
+            </div>
+            <div class="mb-3">
+                <select class="form-select w-full p-2 rounded-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500" @bind="newTransactionType" required>
+                    <option disabled value="">Type</option>
+                    <option value="Credit">Credit</option>
+                    <option value="Debit">Debit</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <select class="form-select w-full p-2 rounded-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500" @bind="newTransactionSource">
+                    <option disabled value="">Source</option>
+                    <option value="bank">Bank</option>
+                    <option value="cash">Cash</option>
+                    <option value="online">Online</option>
+                    <option value="bonus">Bonus</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <select class="form-select w-full p-2 rounded-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500" @bind="newTransactionTags" required>
+                    <option disabled value="">Tags</option>
+                    <option value="yearly">Yearly</option>
+                    <option value="monthly">Monthly</option>
+                    <option value="food">Food</option>
+                    <option value="drinks">Drinks</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <textarea class="form-textarea w-full p-2 rounded-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500" rows="3" placeholder="Notes" @bind="newTransactionNotes"></textarea>
+            </div>
+
+            <div class="flex justify-between items-center space-x-2 mt-4">
+                <button type="submit" class="w-1/2 p-2 rounded-xl bg-green-600 text-black font-semibold hover:bg-green-700 transition-all">Save</button>
+                <button type="button" class="w-1/2 p-2 rounded-xl bg-red-600 text-black font-semibold hover:bg-red-700 transition-all" @onclick="OnCancel">Cancel</button>
+            </div>
+        </form>
+
+        @if (!string.IsNullOrEmpty(Message))
+        {
+                <p class="text-center text-sm text-green-600 mt-4">@Message</p>
+        }
+    </div>
+</section>
+
+@code {
+    private decimal newTransactionAmount = 0;
+    private string newTransactionType = "Credit";
+    private string newTransactionTags = "";
+    private string newCustomTags = ""; // Custom tags entered by the user
+    private string newTransactionSource = "";
+    private string newTransactionNotes = "";
+    private string Message = "";
+    private List<TransactionModel> Transactions = new();
+
+    protected override void OnInitialized()
+    {
+        // Load transactions from service
+        var appData = TransactionService.LoadAppData();
+        Transactions = appData.Transactions;
+    }
+
+    private async Task OnSaveTransaction()
+    {
+        // Retrieve the userId from localStorage
+        var userId = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "userId");
+        if (string.IsNullOrEmpty(userId))
+        {
+            Message = "User ID not found. Please log in.";
+            return;
+        }
+
+        // Convert the userId to integer
+        int parsedUserId = int.Parse(userId);
+
+        // Check if the user has sufficient balance for the transaction
+        if (newTransactionType == "Debit" && !TransactionService.CheckSufficientBalance(parsedUserId, newTransactionAmount))
+        {
+            Message = "Balance is insufficient";
+            return;
+        }
+
+        // Combine predefined tags with custom tags
+        var allTags = newTransactionTags.Split(',').ToList(); // Predefined tags
+        if (!string.IsNullOrEmpty(newCustomTags))
+        {
+            allTags.AddRange(newCustomTags.Split(',').Select(tag => tag.Trim()));
+        }
+
+        // Generate a unique TransactionId based on existing transactions
+        var newTransactionId = Transactions.Any() ? Transactions.Max(t => t.Id) + 1 : 1;
+
+        // Save the transaction
+        var newTransaction = new TransactionModel
+            {
+                Id = newTransactionId,  // Assign the unique TransactionId
+                UserId = parsedUserId,
+                Amount = newTransactionAmount,
+                Type = Enum.TryParse<TransactionModel.TransactionType>(newTransactionType, out var type) ? type : TransactionModel.TransactionType.Credit,
+                Tags = allTags.Distinct().ToList(), // Combine both, remove duplicates
+                Source = newTransactionSource.Split(',').ToList(),
+                Notes = newTransactionNotes,
+                Date = DateTime.Now
+            };
+
+        // Add the transaction to the list
+        Transactions.Add(newTransaction);
+
+        // Save the updated transaction list
+        TransactionService.SaveTransactions(Transactions);
+
+        Message = "Transaction saved";
+    }
+
+    private void OnCancel()
+    {
+        NavigationManager.NavigateTo("/home");
+    }
+}

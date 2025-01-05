@@ -1,0 +1,66 @@
+﻿@page "/debtDetails"
+@using ExpenseTracker.Models
+@inject DebtService DebtService
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+<div class="container py-4">
+    <div class="card shadow">
+        <!-- Card Header with Green Background and Centered Text -->
+        <div class="card-header bg-success text-white text-center">
+            <h3 class="mb-0">Debt Details</h3>
+        </div>
+        <div class="card-body">
+            @if (Debts.Any())
+            {
+                    <table class="table table-bordered table-hover">
+                        <!-- Table Header with Default (No Fill Color, Black Text) -->
+                        <thead>
+                            <tr>
+                                <th>Amount</th>
+                                <th>Paid Amount</th>
+                                <th>Source</th>
+                                <th>Notes</th>
+                                <th>Cleared</th>
+                                <th>Created Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var debt in Debts)
+                        {
+                                    <tr>
+                                        <!-- Normal Font Weight for Table Columns -->
+                                        <td class="text-dark">@debt.Amount.ToString("C")</td> <!-- Format Amount as Currency -->
+                                        <td class="text-dark">@debt.PaidAmount.ToString("C")</td> <!-- Format Paid Amount as Currency -->
+                                        <td class="text-dark">@debt.Source</td>
+                                        <td class="text-dark">@debt.Notes</td>
+                                        <td>
+                                            <span class="badge @(debt.IsCleared ? "bg-success" : "bg-danger")">
+                                        @(debt.IsCleared ? "Yes" : "No")
+                                            </span>
+                                        </td>
+                                        <td class="text-dark">@debt.Date.ToString("MM/dd/yyyy")</td> <!-- Format Created Date -->
+                                    </tr>
+                        }
+                        </tbody>
+                    </table>
+            }
+            else
+            {
+                    <div class="alert alert-warning" role="alert">
+                        No debts found.
+                    </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private List<DebtModel> Debts = new();
+
+    protected override void OnInitialized()
+    {
+        // Load all debts from the DebtService
+        Debts = DebtService.GetAllDebts();
+    }
+}

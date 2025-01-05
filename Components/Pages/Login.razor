@@ -1,0 +1,75 @@
+﻿@page "/"
+@page "/login"
+@using ExpenseTracker.Components.Layout
+@layout FirstLayout
+@using ExpenseTracker.Models
+@inject UserService UserService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<section class="min-vh-100 d-flex justify-content-center align-items-center" style="background-color: #ffffff;">
+    <div class="card shadow-lg border-0 p-4" style="width: 400px; border-radius: 16px; background-color: #ffffff;">
+        <!-- Header -->
+        <h2 class="text-center mb-4 text-success" style="font-weight: bold;">Login</h2>
+        <p class="text-center text-muted mb-4">Login to track your expenses.</p>
+
+        <!-- Login Form -->
+        <form @onsubmit="OnLogin">
+            <div class="mb-3">
+                <label for="username" class="form-label text-success" style="font-weight: 500;">Username</label>
+                <input id="username" type="text" class="form-control" placeholder="Enter your username" @bind="LoginUsername" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label text-success" style="font-weight: 500;">Password</label>
+                <input id="password" type="password" class="form-control" placeholder="Enter your password" @bind="LoginPassword" required>
+            </div>
+
+            <button type="submit" class="btn" style="background-color: #0EB075; color: #ffffff; font-size: 1rem; font-weight: 600; width: 100%; padding: 12px 0; margin-bottom: 16px;">Login</button>
+        </form>
+
+        <!-- Error or Success Message -->
+        @if (!string.IsNullOrEmpty(Message))
+        {
+            <p class="text-center mt-3" style="color: @((Message.Contains("successful")) ? "#28a745" : "#dc3545");">@Message</p>
+        }
+
+        <!-- Redirect to Register -->
+        <div class="text-center mt-3">
+            <p class="mb-0">Don't have an account? <a href="/register" class="text-success text-decoration-none">Signup here</a></p>
+        </div>
+    </div>
+</section>
+
+
+
+@code {
+    private string LoginUsername = "";
+    private string LoginPassword = "";
+    private string Message = "";
+
+    private async Task OnLogin()
+    {
+        var users = UserService.LoadUsers();
+
+        var user = users.FirstOrDefault(u => u.Username == LoginUsername);
+
+        if (user == null)
+        {
+            Message = "Username not found.";
+            return;
+        }
+
+        if (!UserService.ValidatePassword(LoginPassword, user.Password))
+        {
+            Message = "Invalid password.";
+            return;
+        }
+
+        // Save userId to local storage
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "userId", user.Id.ToString());
+
+        // Navigate to the dashboard
+        NavigationManager.NavigateTo("/dashboard");
+    }
+}

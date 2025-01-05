@@ -1,0 +1,131 @@
+﻿@page "/transactionDetails"
+@using ExpenseTracker.Models
+@inject TransactionService TransactionService
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
+
+<section class="container mt-5">
+    <!-- Header Section -->
+    <h2 class="text-center mb-4 text-success">User Transactions</h2>
+
+    <!-- Filter Section -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <input type="text" class="form-control border-success" placeholder="Search by tags (comma-separated)" @bind="SearchTags" />
+        </div>
+        <div class="col-md-3">
+            <select class="form-select border-success" @bind="SelectedType">
+                <option value="">All Types</option>
+                <option value="Credit">Credit</option>
+                <option value="Debit">Debit</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="date" class="form-control border-success" @bind="ExactDate" />
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control border-success" placeholder="Search by Title" @bind="SearchTitle" />
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <button class="btn btn-success w-100" @onclick="ApplyFilters">Search</button>
+        </div>
+    </div>
+
+    <!-- Sort Button Aligned to the Right -->
+    <div class="row mb-4">
+        <div class="col-md-12 d-flex justify-content-end">
+            <button class="btn btn-secondary w-auto" @onclick="SortTransactionsByDate">Sort by Date</button>
+        </div>
+    </div>
+
+    <!-- Transactions Table -->
+    <table class="table table-striped table-bordered">
+        <thead class="table-success">
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Source</th>
+                <th>Tags</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (FilteredTransactions.Any())
+            {
+                foreach (var transaction in FilteredTransactions)
+                {
+                            <tr>
+                                <td>@transaction.Id</td>
+                                <td>@transaction.Type</td>
+                                <td>@transaction.Amount</td>
+                                <td>@transaction.Date.ToString("yyyy-MM-dd")</td>
+                                <td>@string.Join(", ", transaction.Source ?? new List<string>())</td>
+                                <td>@string.Join(", ", transaction.Tags ?? new List<string>())</td>
+                            </tr>
+                }
+            }
+            else
+            {
+                    <tr>
+                        <td colspan="6" class="text-center">No transactions match the filters.</td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+</section>
+
+
+@code {
+    private List<TransactionModel> UserTransactions = new();
+    private List<TransactionModel> FilteredTransactions = new();
+
+    private string SearchTags { get; set; } = string.Empty;
+    private string SelectedType { get; set; } = string.Empty;
+    private DateTime? ExactDate { get; set; } = null;
+    private string SearchTitle { get; set; } = string.Empty; // For Title Search
+
+    protected override async Task OnInitializedAsync()
+    {
+        var userId = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "userId");
+        if (int.TryParse(userId, out var parsedUserId))
+        {
+            UserTransactions = TransactionService.GetUserTransactions(parsedUserId);
+            FilteredTransactions = new List<TransactionModel>(UserTransactions);
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("alert", "Invalid User ID found in localStorage.");
+        }
+    }
+
+    private void ApplyFilters()
+    {
+        var tags = SearchTags.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).ToList();
+
+        // First, filter by title if SearchTitle is not empty
+        if (!string.IsNullOrEmpty(SearchTitle))
+        {
+            FilteredTransactions = TransactionService.FindTransactionsByTitle(UserTransactions.First().UserId, SearchTitle);
+        }
+        else
+        {
+            // If SearchTitle is empty, apply other filters
+            FilteredTransactions = TransactionService.FilterTransactions(
+                UserTransactions.First().UserId,
+                SelectedType,
+                tags,
+                ExactDate
+            );
+        }
+    }
+
+    // Method to sort transactions by date
+    private void SortTransactionsByDate()
+    {
+        FilteredTransactions = TransactionService.SortTransactionsByTransactionDate(FilteredTransactions, ascending: true);
+    }
+}
