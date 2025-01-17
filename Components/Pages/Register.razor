@@ -42,7 +42,6 @@
     </div>
 </section>
 
-
 @code {
     private string RegisterUsername = "";
     private string RegisterEmail = "";
@@ -63,11 +62,26 @@
             return;
         }
 
+        // Check if the username already exists
+        if (Users.Any(u => u.Username == RegisterUsername))
+        {
+            Message = "Username already exists.";
+            return;
+        }
+
+        // Check if the email already exists
         if (Users.Any(u => u.Email == RegisterEmail))
         {
             Message = "Email already exists.";
             return;
         }
+
+        // Validate password (Example: must be at least 6 characters long)
+        // if (RegisterPassword.Length < 6)
+        // {
+        //     Message = "Password must be at least 6 characters long.";
+        //     return;
+        // }
 
         // Generate a unique ID for the new user
         var newUserId = Users.Any() ? Users.Max(u => u.Id) + 1 : 1;
@@ -82,7 +96,7 @@
 
         Users.Add(newUser);
         UserService.SaveUsers(Users);
-        Message = "Registration Sucessful";
+        Message = "Registration Successful";
         await Task.Delay(2000);
         NavigationManager.NavigateTo("/login");
     }

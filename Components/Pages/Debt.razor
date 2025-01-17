@@ -4,28 +4,78 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
+<style>
+    /* Save and Cancel Button Styles */
+    .btn-success {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 14px;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-success:active {
+            background-color: #1e7e34;
+            transform: scale(0.95);
+        }
+
+    /* Custom Select Styling */
+    .form-select {
+        appearance: none;
+        background-color: #f1f5f9;
+        border: 2px solid #d1d5db;
+        border-radius: 6px;
+        padding: 8px 12px;
+        font-size: 14px;
+        color: #374151;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Form Input Styling */
+    .form-control {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+
+    /* Form Card Styling */
+    .card {
+        padding: 16px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        width: 320px;
+    }
+</style>
+
 <section class="bg-gradient-to-r from-indigo-500 via-purple-600 to-pink-500">
     <div class="d-flex justify-content-center align-items-center min-vh-100">
         <!-- Debt Form -->
-        <div class="card shadow-lg border-0 p-4" style="width: 350px; background-color: #ffffff; border-radius: 12px;">
-            <h2 class="text-center mb-4 fw-bold" style="color: #28a745;">Debt Details</h2>
+        <div class="card shadow-lg border-0">
+            <h2 class="text-center mb-3 fw-bold" style="color: #28a745;">Debt Details</h2>
 
             <!-- Debt Form -->
             <form @onsubmit="OnSaveDebt">
                 <!-- Amount Input -->
-                <div class="mb-3">
+                <div class="mb-2">
                     <label for="Amount" class="form-label">Total Debt Amount</label>
-                    <input type="number" class="form-control" placeholder="Amount" style="font-weight: 300;" @bind="DebtAmount" required min="0" step="any" id="Amount">
+                    <input type="number" class="form-control" placeholder="Amount" @bind="DebtAmount" required min="0" step="any" id="Amount">
                 </div>
 
                 <!-- Paid Amount Input -->
-                <div class="mb-3">
+                <div class="mb-2">
                     <label for="PaidAmount" class="form-label">Return Amount</label>
-                    <input type="number" class="form-control" placeholder="Paid Amount" style="font-weight: 300;" @bind="PaidAmount" min="0" step="any" id="PaidAmount">
+                    <input type="number" class="form-control" placeholder="Paid Amount" @bind="PaidAmount" min="0" step="any" id="PaidAmount">
                 </div>
 
                 <!-- Source Dropdown -->
-                <div class="mb-3">
+                <div class="mb-2">
                     <label for="Source" class="form-label">Source</label>
                     <select class="form-select" @bind="DebtSource" id="Source">
                         <option disabled value="">Select Source</option>
@@ -36,33 +86,46 @@
                     </select>
                 </div>
 
+                <!-- Debt Type Dropdown -->
+                <div class="mb-2">
+                    <label for="DebtType" class="form-label">Debt Type</label>
+                    <select class="form-select" @bind="DebtType" required id="DebtType">
+                        <option disabled selected value="">Select Debt Type</option>
+                        <option value="debtIn">Debt In</option>
+                        <option value="debtOut">Debt Out</option>
+                    </select>
+                </div>
+
                 <!-- Due Date Input -->
-                <div class="mb-3">
+                <div class="mb-2">
                     <label for="DueDate" class="form-label">Due Date</label>
                     <input type="date" class="form-control" @bind="DueDate" required id="DueDate">
                 </div>
 
                 <!-- Notes Input -->
-                <div class="mb-3">
+                <div class="mb-2">
                     <label for="Notes" class="form-label">Notes</label>
-                    <textarea class="form-control" rows="3" placeholder="Notes" style="font-weight: 300;" @bind="DebtNotes" id="Notes"></textarea>
+                    <textarea class="form-control" rows="2" placeholder="Notes" @bind="DebtNotes" id="Notes"></textarea>
                 </div>
 
-                <!-- Save Button -->
-                <div class="d-flex justify-content-center mt-4">
-                    <button type="submit" class="btn" style="background-color: #28a745; color: white;">Save</button>
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-between mt-3">
+                    <button type="submit" class="btn btn-success w-50 me-2">Save Debt</button>
+                    <button type="button" class="btn btn-success w-50" @onclick="OnCancel">Cancel</button>
                 </div>
             </form>
-
             <!-- Success/Message -->
             @if (!string.IsNullOrEmpty(Message))
             {
-                    <p class="text-center text-muted mt-3">@Message</p>
+                <p class="text-center text-muted mt-3">@Message</p>
             }
         </div>
     </div>
 </section>
 
+
+
+          
 
 @code {
     private decimal DebtAmount = 0;
@@ -71,6 +134,7 @@
     private string DebtSource = "";
     private string DebtNotes = "";
     private string Message = "";
+    private DebtType DebtType = DebtType.debtIn; // Default to 'debtIn'
 
     private List<DebtModel> Debts = new();
 
@@ -109,9 +173,9 @@
                 Amount = DebtAmount,
                 PaidAmount = PaidAmount,
                 Source = DebtSource,
-                IsCleared = false,  // Initially, the debt is not cleared
                 Notes = DebtNotes,
                 Date = DateTime.Now, // Current date as the creation date
+                Type = DebtType // Assign the selected DebtType
             };
 
         // Save the new debt using DebtService
@@ -129,7 +193,10 @@
 
     private void OnCancel()
     {
-        // Navigate to the home page or reset the form as needed
-        NavigationManager.NavigateTo("/home");
+        // Reload the current page
+        NavigationManager.NavigateTo(NavigationManager.Uri, forceLoad: true);
     }
 }
+
+
+   

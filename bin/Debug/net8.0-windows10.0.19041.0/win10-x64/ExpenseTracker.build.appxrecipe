@@ -512,10 +512,13 @@
       <PackagePath>wwwroot\ExpenseTracker.styles.css</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\LEGION\source\repos\ExpenseTracker\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\scopedcss\projectbundle\ExpenseTracker.bundle.scp.css">
-      <PackagePath>wwwroot\ExpenseTracker.g22z3imsl2.bundle.scp.css</PackagePath>
+      <PackagePath>wwwroot\ExpenseTracker.cqxhj3d27g.bundle.scp.css</PackagePath>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\LEGION\source\repos\ExpenseTracker\Components\Layout\MainLayout.razor.css">
       <PackagePath>Components\Layout\MainLayout.razor.css</PackagePath>
+    </AppxPackagedFile>
+    <AppxPackagedFile Include="C:\Users\LEGION\source\repos\ExpenseTracker\Components\Layout\NavMenu.razor.css">
+      <PackagePath>Components\Layout\NavMenu.razor.css</PackagePath>
     </AppxPackagedFile>
   </ItemGroup>
   <ItemGroup>

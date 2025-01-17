@@ -2,145 +2,330 @@
 @using ExpenseTracker.Models
 @inject NavigationManager NavigationManager
 @inject TransactionService TransactionService
+@inject DebtService DebtService
 @inject IJSRuntime JSRuntime
 
-<div class="main-content container py-4" style="background-color: white; color: black;">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div class="d-flex align-items-center w-100">
-            <div class="input-group" style="width: 50%;">
-                <span class="input-group-text bg-white text-dark">
-                    <i class="bi bi-search"></i>
-                </span>
-                <input @bind="SearchTerm"
-                       @oninput="OnSearchInput"
-                       type="text"
-                       class="form-control bg-white text-dark"
-                       placeholder="Search by type, tags, or date range..." />
-            </div>
-            <div id="currentDate" class="ms-3 text-dark"></div>
-        </div>
-    </div>
 
-    <!-- Summary Cards -->
-    <div class="row g-3">
-        <div class="col-md-3">
-            <div class="card text-center bg-warning text-white shadow-sm">
-                <div class="card-body">
-                    <h6>Total CashInFlows</h6>
-                    <p class="display-6">@TotalWealth</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card text-center bg-success text-white shadow-sm">
-                <div class="card-body">
-                    <h6>Total CashOutflows</h6>
-                    <p class="display-6">@TotalOutflows</p>
-                </div>
+<!-- Summary Cards -->
+<div class="row g-4 mt-5">
+    <!-- Total Wealth -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #28a745; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Total Wealth</h6>
+                <p class="display-6" style="font-size: 17px;">@TotalWealth</p>
             </div>
         </div>
     </div>
 
-    <!-- Summary Cards for Income and Expense -->
-    <div class="row g-3 mt-4">
-        <div class="col-md-3">
-            <div class="card text-center bg-success text-white shadow-sm">
-                <div class="card-body">
-                    <h6>Lowest Income</h6>
-                    <p class="display-6">@LowestIncome</p>
+    <!-- Total Outflows -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #ffc107; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Total Outflows</h6>
+                <p class="display-6" style="font-size: 17px;">@TotalOutflows</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Inflows -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #ffc107; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Total Inflows</h6>
+                <p class="display-6" style="font-size: 17px;">@TotalEarnings</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Net Balance -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #dc3545; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Net Balance</h6>
+                <p class="display-6" style="font-size: 17px;">@TotalWealth</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Transactions -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #ffc107; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Total Transactions</h6>
+                <p class="display-6" style="font-size: 17px;">@TotalTransactions</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Transaction Value -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #28a745; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Total Transaction Value</h6>
+                <p class="display-6" style="font-size: 17px;;">@TotalTransactionValue</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Highest Inflow -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #dc3545; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Highest Inflow</h6>
+                @if (HigInflow != null)
+                {
+                    <p class="display-6" style="font-size: 17px;">@HigInflow.Amount</p>
+                    <small style="font-size: 17px;">@HigInflow.Date.ToString("MMMM dd, yyyy")</small>
+                    <br />
+                    <small style="font-size: 17px;">@HigInflow.Type</small>
+                }
+                else
+                {
+                    <p style="font-size: 17px;">No data available</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Lowest Inflow -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #28a745; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Lowest Inflow</h6>
+                @if (LowInflow != null)
+                {
+                    <p class="display-6" style="font-size: 17px;">@LowInflow.Amount</p>
+                    <small style="font-size: 17px;">@LowInflow.Date.ToString("MMMM dd, yyyy")</small>
+                    <br />
+                    <small style="font-size: 17px;">@LowInflow.Type</small>
+                }
+                else
+                {
+                    <p style="font-size: 17px;">No data available</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Highest Outflow -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #dc3545; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Highest Outflow</h6>
+                @if (HigOutflow != null)
+                {
+                    <p class="display-6" style="font-size: 17px;">@HigOutflow.Amount</p>
+                    <small style="font-size: 17px;">@HigOutflow.Date.ToString("MMMM dd, yyyy")</small>
+                    <br />
+                }
+                else
+                {
+                    <p style="font-size: 17px;">No data available</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Low Outflow -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #ffc107; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Low Outflow</h6>
+                @if (LowOutflow != null)
+                {
+                    <p class="display-6" style="font-size: 17px;">@LowOutflow.Amount</p>
+                    <small style="font-size: 17px; ">@LowOutflow.Date.ToString("MMMM dd, yyyy")</small>
+                    <br />
+                    <small style="font-size: 17px;">@LowOutflow.Type</small>
+                }
+                else
+                {
+                    <p style="font-size: 17px;">No data available</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Highest Debt -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #dc3545; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Highest Debt</h6>
+                @if (HighDebt != null)
+                {
+                    <p class="display-6" style="font-size: 17px;">@HighDebt.Amount</p>
+                    <small style="font-size: 17px;">@HighDebt.Date.ToString("MMMM dd, yyyy")</small>
+                    <br />
+                }
+                else
+                {
+                    <p style="font-size: 17px;">No data available</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Lowest Debt -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #28a745; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Lowest Debt</h6>
+                @if (LowDebt != null)
+                {
+                    <p class="display-6" style="font-size: 17px;">@LowDebt.Amount</p>
+                    <small style="font-size: 17px;">@LowDebt.Date.ToString("MMMM dd, yyyy")</small>
+                    <br />
+                }
+                else
+                {
+                    <p style="font-size: 17px;">No data available</p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Cleared Debt -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #ffc107; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Cleared Debt</h6>
+                <p class="display-6" style="font-size: 17px;">@ClearDebt</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Remaining Debt -->
+    <div class="col-md-3">
+        <div class="card summary-card" style="background-color: #dc3545; height: 150px;">
+            <div class="card-body text-center">
+                <h6 style="font-weight: bold;">Remaining Debt</h6>
+                <p class="display-6" style="font-size: 17px;">@RemainingDebt</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <!-- Pending Debts Section -->
+<div class="row mt-5">
+    <div class="col-12">
+        <h3>Pending Debts</h3>
+        @if (PendingDebts?.Any() ?? false)
+        {
+            <ul class="list-group">
+                @foreach (var debt in PendingDebts)
+                {
+                    <li class="list-group-item">
+                        <span><strong>Debt Amount:</strong> @debt.Amount</span>
+                        <br />
+                        <span><strong>Due Date:</strong> @debt.DueDate.ToString("MMMM dd, yyyy")</span>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>No pending debts available.</p>
+        }
+    </div>
+</div>
+
+
+    <div class="mt-5">
+        <!-- Date Range Filter -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h5 class="mb-3">Filter by Date Range</h5>
+                <div class="d-flex align-items-center">
+                    <input type="date" class="form-control me-2" style="max-width: 200px;" @bind="StartDate" />
+                    <span class="mx-2">to</span>
+                    <input type="date" class="form-control me-2" style="max-width: 200px;" @bind="EndDate" />
+                    <button @onclick="FilterTransactionByDate" class="btn btn-success">Apply Date Filter</button>
                 </div>
             </div>
         </div>
-
-        <div class="col-md-3">
-            <div class="card text-center bg-warning text-white shadow-sm">
-                <div class="card-body">
-                    <h6>Lowest Expense</h6>
-                    <p class="display-6">@LowestExpense</p>
-                </div>
-            </div>
-        </div>
-   </div>
+    </div>
 
 
-<!-- Add this CSS in your style section or an external CSS file -->
+<h3 class="mb-4">Filtered Transactions</h3>
+
+@if (FilteredItems?.Any() ?? false)
+{
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-sm" style="background-color: #28a745; color: white; width: 80%;">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Date</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Tags</th>
+                    <th scope="col">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var transaction in FilteredItems)
+                {
+                    <tr style="background-color: #e9ecef;">
+                        <td>@transaction.Date.ToString("MMMM dd, yyyy")</td>
+                        <td>@transaction.Type</td>
+                        <td>@string.Join(", ", transaction.Tags ?? new List<string>())</td>
+                        <td style="color: black;">@transaction.Amount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-warning" role="alert">
+        No transactions found matching the criteria.
+    </div>
+}
+
 <style>
-    .input-group-text {
-        border-radius: 0.25rem 0 0 0.25rem;
+    table th, table td {
+        white-space: nowrap; /* Prevent text from wrapping to the next line */
     }
 
-    .form-control {
-        border-radius: 0 0.25rem 0.25rem 0;
+    /* Add a light grey color for the rows */
+    table tbody tr {
+        background-color: #e9ecef; /* Light grey for rows */
     }
 
-    .form-control:focus {
-        box-shadow: none;
-        border-color: #495057;
-    }
-
-    .card-body h6 {
-        font-size: 1rem;
-    }
-
-    .card-body .display-6 {
-        font-size: 2rem;
-        font-weight: bold;
-    }
-
-    .bg-warning {
-        background-color: #ffc107 !important; /* Yellow for cash inflows and expense */
-    }
-
-    .bg-success {
-        background-color: #28a745 !important; /* Green for cash outflows and income */
+    /* Change amount text color to black */
+    table td {
+        color: black;
     }
 </style>
 
-<!-- Add Bootstrap Icons library in your HTML -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
-
-    <!-- Filtered Transactions -->
-    <div class="mt-4">
-        <h3>Filtered Transactions</h3>
-        <ul>
-            @if (FilteredItems?.Any() ?? false)
-            {
-                @foreach (var transaction in FilteredItems)
-                {
-                    <li>
-                        <span>
-                            @transaction.Date - @transaction.Type -
-                            @string.Join(", ", transaction.Tags ?? new List<string>()) -
-                            @transaction.Amount
-                        </span>
-                    </li>
-                }
-            }
-            else
-            {
-                <p>No transactions found matching the criteria.</p>
-            }
-        </ul>
-    </div>
-</div>
 
 @code {
     private decimal TotalEarnings = 0;
     private decimal TotalOutflows = 0;
     private decimal TotalWealth = 0;
-    private decimal HighestIncome = 0;
-    private decimal LowestIncome = 0;
-    private decimal HighestExpense = 0;
-    private decimal LowestExpense = 0;
-    private string SearchTerm = string.Empty;
+    private decimal TotalTransactions = 0;
+    private decimal TotalTransactionValue = 0;
+    private DateTime StartDate = DateTime.Now.AddMonths(-1); // Default to last month
+    private DateTime EndDate = DateTime.Now;
     private List<TransactionModel> FilteredItems = new();
-    private CancellationTokenSource _cancellationTokenSource = new();
+    private TransactionModel HigInflow;
+    private TransactionModel LowInflow;
+    private TransactionModel HigOutflow;
+    private TransactionModel LowOutflow;
+    private DebtModel HighDebt;
+    private DebtModel LowDebt;
+    private decimal ClearDebt = 0;
+    private decimal RemainingDebt = 0;
+    private List<DebtModel> PendingDebts = new();
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
+
             var userId = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "userId");
 
             if (string.IsNullOrEmpty(userId))
@@ -151,25 +336,36 @@
 
             var id = int.Parse(userId);
 
-            // Fetch total earnings and outflows
+            // Fetch total earnings, outflows, and other statistics
             TotalEarnings = TransactionService.CalculateTotalIncome(id);
             TotalOutflows = TransactionService.CalculateTotalExpenses(id);
             TotalWealth = TotalEarnings - TotalOutflows;
 
-            // Fetch the highest and lowest income and expenses
-            var highestIncome = TransactionService.GetHighestIncome(id);
-            var lowestIncome = TransactionService.GetLowestIncome(id);
-            var highestExpense = TransactionService.GetHighestExpense(id);
-            var lowestExpense = TransactionService.GetLowestExpense(id);
+            // Get total transactions and total transaction value
+            TotalTransactions = TransactionService.GetTotalTransactions(id);
+            TotalTransactionValue = TransactionService.GetUserTransactions(id).Sum(t => t.Amount);
 
-            // Set the values in the dashboard
-            HighestIncome = highestIncome?.Amount ?? 0;
-            LowestIncome = lowestIncome?.Amount ?? 0;
-            HighestExpense = highestExpense?.Amount ?? 0;
-            LowestExpense = lowestExpense?.Amount ?? 0;
+            // Fetch highest and lowest inflow
+            HigInflow = TransactionService.GetHighIncome(id);
+            LowInflow = TransactionService.GetLowIncome(id);
+
+            // Fetch highest and lowest outflow
+            HigOutflow = TransactionService.GetHighExpense(id);
+            LowOutflow = TransactionService.GetLowExpense(id);
+
+            // Calculate debt information
+            ClearDebt = DebtService.CalClearedDebt(id);
+            RemainingDebt = DebtService.CalRemainingDebt(id);
+
+            // Fetch highest and lowest debts
+            HighDebt = DebtService.GetHighDebt(id);
+            LowDebt = DebtService.GetLowDebt(id);
 
             // Load all transactions initially
             FilteredItems = TransactionService.GetUserTransactions(id);
+
+            // Fetch pending debts for the user
+            PendingDebts = DebtService.GetPendingDebts(id);
         }
         catch (Exception ex)
         {
@@ -177,47 +373,24 @@
         }
     }
 
-    private async Task OnSearchInput()
+    private void FilterTransactionByDate()
     {
-        // Cancel any ongoing search task
-        _cancellationTokenSource.Cancel();
-        _cancellationTokenSource = new CancellationTokenSource();
+        var userId = int.Parse(JSRuntime.InvokeAsync<string>("localStorage.getItem", "userId").Result);
 
-        // Wait for 500ms before triggering the search to avoid rapid requests
-        await Task.Delay(500);
+        // Filter the transactions based on the selected date range
+        FilteredItems = TransactionService
+            .GetUserTransactions(userId)
+            .Where(t => t.Date >= StartDate && t.Date <= EndDate)
+            .ToList();
 
-        if (!_cancellationTokenSource.Token.IsCancellationRequested)
-        {
-            FilterItems();
-        }
+        // Ensure UI updates after the filter is applied
+        StateHasChanged();
     }
 
-    private void FilterItems()
+    private void Logout()
     {
-        if (string.IsNullOrWhiteSpace(SearchTerm))
-        {
-            // Load all transactions if the search query is empty
-            var userId = int.Parse(JSRuntime.InvokeAsync<string>("localStorage.getItem", "userId").Result);
-            FilteredItems = TransactionService.GetUserTransactions(userId);
-        }
-        else
-        {
-            // Split the search query into individual words
-            var searchWords = SearchTerm.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-            // Get user ID
-            var userId = int.Parse(JSRuntime.InvokeAsync<string>("localStorage.getItem", "userId").Result);
-
-            // Filter transactions based on search query
-            FilteredItems = TransactionService
-                .GetUserTransactions(userId)
-                .Where(t => searchWords.All(word =>
-                    t.Type.ToString().IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    (t.Tags != null && t.Tags.Any(tag => tag.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0)) ||
-                    t.Date.ToString("yyyy-MM-dd").IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0))
-                .ToList();
-        }
-
-        StateHasChanged(); // Trigger re-render after the state update
+        JSRuntime.InvokeVoidAsync("localStorage.removeItem", "userId");
+        NavigationManager.NavigateTo("/login");
     }
 }
+

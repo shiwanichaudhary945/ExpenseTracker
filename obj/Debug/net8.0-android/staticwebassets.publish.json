@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "TW/Yp0j8hSWr5K6gEi8yjzz33PRq67L0nswAl/VwrQ0=",
+  "Hash": "Oo4GQS+psoCYfldjVNtBh0w0Fj5+nuwJFRPl7QtSso0=",
   "Source": "ExpenseTracker",
   "BasePath": "/",
   "Mode": "Root",
@@ -31,8 +31,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ApplicationBundle",
-      "Fingerprint": "g22z3imsl2",
-      "Integrity": "yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU=",
+      "Fingerprint": "cqxhj3d27g",
+      "Integrity": "/AvF6BZEZlXB+rr2zpN5x6VND5GtMfYDjcVR+Yqgr5o=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\obj\\Debug\\net8.0-android\\scopedcss\\bundle\\ExpenseTracker.styles.css"
@@ -52,8 +52,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ProjectBundle",
-      "Fingerprint": "g22z3imsl2",
-      "Integrity": "yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU=",
+      "Fingerprint": "cqxhj3d27g",
+      "Integrity": "/AvF6BZEZlXB+rr2zpN5x6VND5GtMfYDjcVR+Yqgr5o=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\obj\\Debug\\net8.0-android\\scopedcss\\projectbundle\\ExpenseTracker.bundle.scp.css"
@@ -525,7 +525,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1796"
+          "Value": "5428"
         },
         {
           "Name": "Content-Type",
@@ -533,11 +533,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU=\""
+          "Value": "\"/AvF6BZEZlXB+rr2zpN5x6VND5GtMfYDjcVR+Yqgr5o=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 04 Jan 2025 10:27:28 GMT"
+          "Value": "Wed, 15 Jan 2025 18:12:48 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -547,12 +547,12 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU="
+          "Value": "sha256-/AvF6BZEZlXB+rr2zpN5x6VND5GtMfYDjcVR+Yqgr5o="
         }
       ]
     },
     {
-      "Route": "ExpenseTracker.g22z3imsl2.bundle.scp.css",
+      "Route": "ExpenseTracker.cqxhj3d27g.bundle.scp.css",
       "AssetFile": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\obj\\Debug\\net8.0-android\\scopedcss\\projectbundle\\ExpenseTracker.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -562,7 +562,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1796"
+          "Value": "5428"
         },
         {
           "Name": "Content-Type",
@@ -570,11 +570,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU=\""
+          "Value": "\"/AvF6BZEZlXB+rr2zpN5x6VND5GtMfYDjcVR+Yqgr5o=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 04 Jan 2025 10:27:28 GMT"
+          "Value": "Wed, 15 Jan 2025 18:12:48 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -584,7 +584,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "g22z3imsl2"
+          "Value": "cqxhj3d27g"
         },
         {
           "Name": "label",
@@ -592,12 +592,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU="
+          "Value": "sha256-/AvF6BZEZlXB+rr2zpN5x6VND5GtMfYDjcVR+Yqgr5o="
         }
       ]
     },
     {
-      "Route": "ExpenseTracker.g22z3imsl2.styles.css",
+      "Route": "ExpenseTracker.cqxhj3d27g.styles.css",
       "AssetFile": "C:\\Users\\LEGION\\source\\repos\\ExpenseTracker\\obj\\Debug\\net8.0-android\\scopedcss\\bundle\\ExpenseTracker.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -607,7 +607,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1796"
+          "Value": "5428"
         },
         {
           "Name": "Content-Type",
@@ -615,11 +615,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU=\""
+          "Value": "\"/AvF6BZEZlXB+rr2zpN5x6VND5GtMfYDjcVR+Yqgr5o=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 04 Jan 2025 10:27:28 GMT"
+          "Value": "Wed, 15 Jan 2025 18:12:48 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -629,7 +629,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "g22z3imsl2"
+          "Value": "cqxhj3d27g"
         },
         {
           "Name": "label",
@@ -637,7 +637,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU="
+          "Value": "sha256-/AvF6BZEZlXB+rr2zpN5x6VND5GtMfYDjcVR+Yqgr5o="
         }
       ]
     },
@@ -652,7 +652,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1796"
+          "Value": "5428"
         },
         {
           "Name": "Content-Type",
@@ -660,11 +660,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU=\""
+          "Value": "\"/AvF6BZEZlXB+rr2zpN5x6VND5GtMfYDjcVR+Yqgr5o=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Sat, 04 Jan 2025 10:27:28 GMT"
+          "Value": "Wed, 15 Jan 2025 18:12:48 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -674,7 +674,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-yD8ztPVu/Wev+QYNp/0br13+z8rbb1eY4aia4JSGncU="
+          "Value": "sha256-/AvF6BZEZlXB+rr2zpN5x6VND5GtMfYDjcVR+Yqgr5o="
         }
       ]
     },
